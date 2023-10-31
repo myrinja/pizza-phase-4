@@ -1,7 +1,23 @@
 from flask import Flask, request, jsonify
 from models import db, Restaurant, Pizza, RestaurantPizza
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+#db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+db.init_app(app)
+
+@app.route('/')
+def home():
+    return 'welcome to our restaurant'
+
+
 
 # Route to get a list of restaurants
 @app.route('/restaurants', methods=['GET'])
