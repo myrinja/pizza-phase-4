@@ -19,14 +19,15 @@ def home():
 
 
 
-# Route to get a list of restaurants
+
 @app.route('/restaurants', methods=['GET'])
 def get_restaurants():
     restaurants = Restaurant.query.all()
     restaurant_data = [{"id": restaurant.id, "name": restaurant.name, "address": restaurant.address} for restaurant in restaurants]
     return jsonify(restaurant_data)
 
-# Route to get a specific restaurant by ID
+
+
 @app.route('/restaurants/<int:id>', methods=['GET'])
 def get_restaurant(id):
     restaurant = Restaurant.query.get(id)
@@ -41,12 +42,12 @@ def get_restaurant(id):
     else:
         return jsonify({"error": "Restaurant not found"}, 404)
 
-# Route to delete a specific restaurant by ID
+
 @app.route('/restaurants/<int:id>', methods=['DELETE'])
 def delete_restaurant(id):
     restaurant = Restaurant.query.get(id)
     if restaurant:
-        # Delete associated RestaurantPizza records
+       
         RestaurantPizza.query.filter_by(restaurant_id=id).delete()
         db.session.delete(restaurant)
         db.session.commit()
@@ -54,14 +55,14 @@ def delete_restaurant(id):
     else:
         return jsonify({"error": "Restaurant not found"}, 404)
 
-# Route to get a list of pizzas
+
 @app.route('/pizzas', methods=['GET'])
 def get_pizzas():
     pizzas = Pizza.query.all()
     pizza_data = [{"id": pizza.id, "name": pizza.name, "ingredients": pizza.ingredients} for pizza in pizzas]
     return jsonify(pizza_data)
 
-# Route to create a new RestaurantPizza
+
 @app.route('/restaurant_pizzas', methods=['POST'])
 def create_restaurant_pizza():
     data = request.get_json()
